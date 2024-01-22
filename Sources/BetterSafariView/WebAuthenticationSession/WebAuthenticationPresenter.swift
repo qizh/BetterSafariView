@@ -6,7 +6,7 @@ import AuthenticationServices
 import SafariServices
 #endif
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
 typealias ViewType = UIView
 typealias ViewRepresentableType = UIViewRepresentable
 #elseif os(macOS)
@@ -32,7 +32,7 @@ struct WebAuthenticationPresenter<Item: Identifiable>: ViewRepresentableType {
         return Coordinator(parent: self)
     }
     
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
     
     func makeUIView(context: Context) -> ViewType {
         return makeView(context: context)
@@ -42,6 +42,7 @@ struct WebAuthenticationPresenter<Item: Identifiable>: ViewRepresentableType {
         
         updateView(uiView, context: context)
         
+		#if !os(visionOS)
         // To set a delegate for the presentation controller of an `SFAuthenticationViewController` as soon as possible,
         // check the view controller presented by `view.viewController` then set it as a delegate on every view updates.
         // INFO: `SFAuthenticationViewController` is a private subclass of `SFSafariViewController`.
@@ -49,6 +50,7 @@ struct WebAuthenticationPresenter<Item: Identifiable>: ViewRepresentableType {
             context.coordinator.setInteractiveDismissalDelegateIfPossible()
             return
         }
+		#endif
     }
     
     #elseif os(macOS)

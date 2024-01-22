@@ -31,7 +31,9 @@ public struct SafariView {
     
     /// A configuration object that defines how a Safari view controller should be initialized.
     public typealias Configuration = SFSafariViewController.Configuration
+	#if !os(visionOS)
     public typealias DismissButtonStyle = SFSafariViewController.DismissButtonStyle
+	#endif
     
     // MARK: Representation Properties
     
@@ -57,7 +59,9 @@ public struct SafariView {
     
     var preferredBarTintColor: UIColor?
     var preferredControlTintColor: UIColor?
+	#if !os(visionOS)
     var dismissButtonStyle: DismissButtonStyle = .done
+	#endif
     
     // There is a bug on Xcode 12.0 (Swift 5.3.0) where `UIColor.init(_ color: Color)` is missing for Mac Catalyst target.
     #if compiler(>=5.3.1) || (compiler(>=5.3) && !targetEnvironment(macCatalyst))
@@ -133,6 +137,7 @@ public struct SafariView {
         return modified
     }
     
+	#if !os(visionOS)
     /// Sets the style of dismiss button to use in the navigation bar to close `SafariView`.
     ///
     /// The default value is `.done`, which makes the button title the localized
@@ -156,13 +161,16 @@ public struct SafariView {
         safariViewController.preferredControlTintColor = self.preferredControlTintColor
         safariViewController.dismissButtonStyle = self.dismissButtonStyle
     }
+	#endif
 }
 
 public extension SafariView.Configuration {
     convenience init(entersReaderIfAvailable: Bool = false, barCollapsingEnabled: Bool = true) {
         self.init()
         self.entersReaderIfAvailable = entersReaderIfAvailable
+		#if !os(visionOS)
         self.barCollapsingEnabled = barCollapsingEnabled
+		#endif
     }
 }
 
