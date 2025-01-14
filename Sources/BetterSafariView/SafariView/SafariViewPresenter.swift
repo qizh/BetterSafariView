@@ -216,7 +216,9 @@ extension SafariViewPresenter {
 				return
 			}
 			
-			presentingViewController.present(safariViewController, animated: true)
+			Task { @MainActor in
+				presentingViewController.present(safariViewController, animated: true)
+			}
 			
 			self.safariViewController = safariViewController
 		}
